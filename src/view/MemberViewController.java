@@ -7,12 +7,9 @@ import java.util.ResourceBundle;
 import application.Main;
 import controller.MemberService;
 import controller.MemberServiceImpl;
-//import controller.TestController;
-//import controller.TestControllerImpl;
-import examples.TableViewTest.Person;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
+import javafx.fxml.FXML; 
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -43,8 +40,10 @@ public class MemberViewController implements Initializable {
 	@FXML	private TableColumn<Member, String> columnID;
 	@FXML	private TableColumn<Member, String> columnPW;
 	@FXML	private TableColumn<Member, String> columnMobilePhone;
-		
+	// Member : model이라고도 하고  DTO, VO 라고도 함 
+	// 시스템 밖에 있는 저장된 정보를 객체들간에 정보로 변환한 자료구조 또는 객체 
 	private final ObservableList<Member> data = FXCollections.observableArrayList();
+	// 목록 : 이중 연결 리스트는 아니지만 리스트의 특징과 배열 특징을 잘 혼용해 놓은 클래스 ArrayList 
 	ArrayList<Member> memberList;
 	MemberService memberService;
 	
@@ -60,9 +59,12 @@ public class MemberViewController implements Initializable {
 		// tableViewMember = new TableView<Member>();
 
 		memberService = new MemberServiceImpl();
+		// 람다식 : java 8 함수형 언어 지원 
+		
+		
 		columnName.setCellValueFactory(cvf -> cvf.getValue().unameProperty());
 		columnID.setCellValueFactory(cvf -> cvf.getValue().uidProperty());
-		//columnPW.setCellValueFactory(cvf -> cvf.getValue().upwProperty());
+		columnPW.setCellValueFactory(cvf -> cvf.getValue().upwProperty());
 		
 		tableViewMember.getSelectionModel().selectedItemProperty().addListener(
 				(observable, oldValue, newValue) -> showMemberInfo(newValue));
@@ -71,12 +73,14 @@ public class MemberViewController implements Initializable {
 		// btnDelete.setOnMouseClicked(e -> handleDelete());		
 		btnExecute.setOnMouseClicked(event -> handleExecute());	
 		
-		// loadMemberTableView();
+		loadMemberTableView();
 	}
 	String str = ""; // 인스턴스 변수 - 객체 변수, 객체가 존재하는 동안 메모리에 존재
 	@FXML 
 	private void handleExecute() { // event source, listener, handler
 		//str = ts.setTextArea(tfExecute.getText());
+		str = str + tfExecute.getText() + "\n";
+		//taExecute.setText(str);
 		/*
 		str = taExecute.getText();
 		String name = tfExecute.getText();
@@ -112,15 +116,20 @@ public class MemberViewController implements Initializable {
 	@FXML 
 	private void handleCreate() { // event source, listener, handler
 		if(tfID.getText().length() > 0) {
-			Member newMember = new Member(tfID.getText(), tfPW.getText(), tfName.getText(), "");
+			Member newMember =
+					new Member(tfID.getText(), tfPW.getText(), tfName.getText(), "");
 			data.add(newMember);			
 			tableViewMember.setItems(data);
+			memberService.create(newMember);
+			
 		} else
 			showAlert("ID 입력오류");
+		
 	}
 	@FXML 
 	private void handleUpdate() {
-		Member newMember = new Member(tfID.getText(), tfPW.getText(), tfName.getText(), tfMobilePhone.getText());
+		Member newMember = 
+				new Member(tfID.getText(), tfPW.getText(), tfName.getText(), tfMobilePhone.getText());
 
 		int selectedIndex = tableViewMember.getSelectionModel().getSelectedIndex();
 		if (selectedIndex >= 0) {
