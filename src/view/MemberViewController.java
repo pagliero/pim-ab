@@ -146,7 +146,7 @@ public class MemberViewController implements Initializable {
 		if (selectedIndex >= 0) {
 			memberService.delete(tableViewMember.getItems().remove(selectedIndex));			
 		} else {
-			showAlert("������ �� �� �����ϴ�.");
+			showAlert("삭제 대상이 없습니다.");
         }
 	}
 	

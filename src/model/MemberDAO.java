@@ -25,7 +25,7 @@ public class MemberDAO {
 		}
 	}
 	public ArrayList<Member> selectAll() { 
-		// ÀÔ·ÂÇÑ ¸Ş¸ğ¸® »ó¿¡ Á¸ÀçÇÏ´Â ¸ğµç ¸â¹ö Á¤º¸¸¦ °¡Á®¿Í Ãâ·Â			
+		// ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½Ş¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½			
 		return memberList;	
 	}
 	
@@ -38,7 +38,7 @@ public class MemberDAO {
 	}
 	
 	public int searchByID(Member member) { 
-		int ret = -1; // ret°¡ 0 ÀÌ»óÀÌ¸é °Ë»ö ¼º°ø, -1 ÀÌ¸é °Ë»ö ½ÇÆĞ
+		int ret = -1; // retï¿½ï¿½ 0 ï¿½Ì»ï¿½ï¿½Ì¸ï¿½ ï¿½Ë»ï¿½ ï¿½ï¿½ï¿½ï¿½, -1 ï¿½Ì¸ï¿½ ï¿½Ë»ï¿½ ï¿½ï¿½ï¿½ï¿½
 		int index = 0;
 		for(Member m : memberList) {
 			if(m.getUid().equals(member.getUid())) {
@@ -54,7 +54,7 @@ public class MemberDAO {
 		int ret = -1;
 		try {
 			int index = searchByID(member);
-			if(index < 0) { // -1ÀÌ¸é °Ë»ö ½ÇÆĞ, µî·Ï °¡´ÉÇÔ
+			if(index < 0) { // -1ï¿½Ì¸ï¿½ ï¿½Ë»ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				fw = new MemberFileWriter(file);
 				memberList.add(member);
 				fw.saveMember(memberList);
@@ -67,13 +67,31 @@ public class MemberDAO {
 	}
 	
 	public int update(Member member) {
-		int ret = -1; // 0 ÀÌ»óÀÌ¸é ÇØ´ç ¾ÆÀÌµğ°¡ Á¸ÀçÇÏ¹Ç·Î ¼öÁ¤, -1ÀÌÇÏÀÌ¸é ¼öÁ¤ ½ÇÆĞ		
+		int ret = -1; // 0 ï¿½Ì»ï¿½ï¿½Ì¸ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¹Ç·ï¿½ ï¿½ï¿½ï¿½ï¿½, -1ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½		
 		
 		
 		return ret;
 	}	
 	public int delete(Member member) {		
-		int ret = -1; // 0 ÀÌ»óÀÌ¸é ÇØ´ç ¾ÆÀÌµğ°¡ Á¸ÀçÇÏ¹Ç·Î »èÁ¦, -1ÀÌÇÏÀÌ¸é »èÁ¦ ½ÇÆĞ
+		int ret = -1; // 0ì´ìƒì´ë©´ í•´ë‹¹ ì•„ì´ë””ê°€ ì¡´ì¬í•˜ë¯€ë¡œ ì‚­ì œ, -1 ì´í•˜ë©´ ì‚­ì œ ì‹¤íŒ¨ 
+		try { 
+			int index = searchByID(member);
+			if(index > 0) {  // -1ì´ë©´ ê²€ìƒ‰ ì‹¤íŒ¨, ì‚­ì œ ë¶ˆê°€ëŠ¥, 0ì´ìƒì´ì–´ì•¼ ì‚­ì œê°€ ê°€ëŠ¥ 
+				fw = new MemberFileWriter(file);
+				memberList.remove(member); 
+				/*
+				 * ArrayList ê°ì²´ë¥¼ ì‘ì—…ì— ë”°ë¼ ìˆ˜ì •í•˜ê³ , ì´ë¥¼ MemberFileWriter ê°ì²´ì´ã…¡
+				 * saveMember() ë©”ì†Œë“œì— ì „ë‹¬ 
+				 */
+				fw.saveMember(memberList);
+				ret=0;
+			}
+			
+		}
+	catch(IOException e) {
+		e.printStackTrace();
+		
+	}
 		
 		return ret;
 	}
